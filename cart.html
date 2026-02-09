@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cart - INFANTA FISH DEALER</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body { font-family: 'Roboto', sans-serif; background:#f4f9ff; margin:20px; }
+table { width:100%; border-collapse: collapse; max-width:600px; margin:auto; }
+th, td { border:1px solid #ccc; padding:10px; text-align:center; }
+button { padding:5px 10px; border:none; background:#0a5c7a; color:white; border-radius:5px; cursor:pointer; }
+button:hover { background:#ff9f1c; }
+a { display:block; text-align:center; margin-top:20px; color:#0a5c7a; font-weight:bold; text-decoration:none; }
+</style>
+</head>
+<body>
+
+<h2 style="text-align:center;">Your Cart</h2>
+
+<table id="cart-table">
+<tr><th>Item</th><th>Price</th><th>Qty</th><th>Subtotal</th><th>Action</th></tr>
+</table>
+
+<p style="text-align:center;">Total: ₱<span id="total">0</span></p>
+
+<a href="checkout.html">Proceed to Checkout</a><br>
+<a href="products.html">Back to Products</a>
+
+<script>
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+const table = document.getElementById('cart-table');
+const totalEl = document.getElementById('total');
+
+function renderCart(){
+    table.innerHTML = '<tr><th>Item</th><th>Price</th><th>Qty</th><th>Subtotal</th><th>Action</th></tr>';
+    let total = 0;
+    cart.forEach((item, index) => {
+        const subtotal = item.price * item.quantity;
+        total += subtotal;
+        const row = table.insertRow();
+        row.innerHTML = `
+            <td>${item.name}</td>
+            <td>₱${item.price}</td>
+            <td>${item.quantity}</td>
+            <td>₱${subtotal}</td>
+            <td><button onclick="removeItem(${index})">Remove</button></td>
+        `;
+    });
+    totalEl.textContent = total.toFixed(2);
+}
+
+function removeItem(index){
+    cart.splice(index,1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+}
+
+renderCart();
+</script>
+
+</body>
+</html>

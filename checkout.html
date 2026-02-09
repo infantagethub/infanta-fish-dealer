@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Checkout - INFANTA FISH DEALER</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body { font-family: 'Roboto', sans-serif; margin:20px; background:#f4f9ff; }
+h2 { color:#0a5c7a; text-align:center; }
+ul { list-style:none; padding:0; max-width:500px; margin:auto; }
+li { margin:5px 0; padding:10px; background:white; border-radius:6px; box-shadow:0 1px 3px rgba(0,0,0,0.1); }
+button { padding:12px; background:#0a5c7a; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold; margin-top:20px; width:100%; }
+button:hover { background:#ff9f1c; }
+p.total { text-align:center; font-weight:bold; font-size:1.2rem; }
+</style>
+</head>
+<body>
+
+<h2>Confirm Your Order</h2>
+
+<h3 style="text-align:center;">Items in Cart</h3>
+<ul id="cart-list"></ul>
+<p class="total">Total: ₱<span id="total">0</span></p>
+
+<button id="confirm-order">Confirm Order</button>
+<a href="products.html" style="display:block; text-align:center; margin-top:15px; color:#0a5c7a; text-decoration:none;">Back to Products</a>
+
+<script>
+// Load cart from localStorage
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+const cartList = document.getElementById('cart-list');
+const totalEl = document.getElementById('total');
+let total = 0;
+
+// Display cart items
+cart.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = `${item.name} - ₱${item.price} x ${item.quantity}`;
+    cartList.appendChild(li);
+    total += item.price * item.quantity;
+});
+totalEl.textContent = total.toFixed(2);
+
+// --- GOOGLE FORM SETTINGS ---
+const formBaseURL = 'https://docs.google.com/forms/d/e/1FAIpQLScEXAMPLE12345/formResponse';
+const entryOrder = 'entry.444444'; // cart items
+const entryTotal = 'entry.555555'; // total price
+
+document.getElementById('confirm-order').addEventListener('click', function(){
+    if(cart.length === 0){
+        alert('Your cart is empty!');
+        return;
+    }
+
+    const orderText = encodeURIComponent(cart.map(item => `${item.name} x ${item.quantity} = ₱${item.price*item.quantity}`).join('\n'));
+    const totalAmount = encodeURIComponent(total.toFixed(2));
+
+    // Build Google Form prefill link (just order + total)
+    const prefillURL = `${formBaseURL}?${entryOrder}=${orderText}&${entryTotal}=${totalAmount}`;
+
+    // Open Google Form
+    window.open(prefillURL, '_blank');
+
+    // Clear cart
+    localStorage.removeItem('cart');
+    alert('Your cart has been cleared. Please complete the Google Form to submit your order.');
+    window.location.href = 'products.html';
+});
+</script>
+
+</body>
+</html>

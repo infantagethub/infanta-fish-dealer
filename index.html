@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>INFANTA FISH DEALER</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ===== Body ===== */
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* ===== Top Navigation ===== */
+.top-nav {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 30px;
+    z-index: 10;
+}
+
+.top-nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    background: rgba(0,0,0,0.3);
+    padding: 8px 15px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.top-nav a:hover {
+    background: rgba(255,159,28,0.8);
+}
+
+/* ===== Carousel / Hero ===== */
+.carousel {
+    position: relative;
+    width: 100%;
+    height: 90vh;
+    overflow: hidden;
+}
+
+.slide {
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.slide.active {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    background-blend-mode: overlay;
+    background-color: rgba(0,0,0,0.3);
+}
+
+.slide img.logo {
+    width: 300px;
+    max-width: 80%;
+    filter: brightness(1.2);
+    margin-bottom: 15px;
+}
+
+.slide h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3rem;
+    margin: 10px 0;
+}
+
+.slide p {
+    font-size: 1.2rem;
+    margin: 0 0 20px;
+}
+
+.slide a.btn {
+    display: inline-block;
+    background-color: #ff9f1c;
+    color: white;
+    padding: 12px 25px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.slide a.btn:hover {
+    background-color: #ffb84d;
+}
+
+/* ===== Carousel Dots ===== */
+.dots {
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.dot {
+    height: 12px;
+    width: 12px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.dot.active {
+    background-color: #ff9f1c;
+}
+
+/* ===== Carousel Arrows ===== */
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.arrow.left { left: 10px; }
+.arrow.right { right: 10px; }
+
+/* ===== Responsive ===== */
+@media(max-width:768px){
+    .slide h1 {
+        font-size: 2rem;
+    }
+    .slide p {
+        font-size: 1rem;
+    }
+    .slide img.logo {
+        width: 200px;
+    }
+    .top-nav {
+        gap: 15px;
+        top: 10px;
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+    <a href="index.html">Home</a>
+    <a href="products.html">Products</a>
+    <a href="#contact">Contact</a>
+</nav>
+
+<!-- Carousel / Hero -->
+<div class="carousel">
+    <!-- Slide 1 -->
+    <div class="slide active" style="background-image: url('sunset-boat.jpg');">
+        <img src="logo.png" alt="INFANTA FISH DEALER Logo" class="logo">
+        <h1>High Protein</h1>
+	<h2>Seafood Every Day</h2>
+        <p>Quality guaranteed straight from local fishermen.</p>
+        <a href="products.html" class="btn">Shop Now</a>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide" style="background-image: url('front-bg.jpg');">
+        <img src="logo.png" alt="INFANTA FISH DEALER Logo" class="logo">
+        <h1>Direct from Fishermen</h1>
+        <p>Affordable, fresh, and delivered to your door.</p>
+        <a href="products.html" class="btn">Order Now</a>
+    </div>
+
+    <!-- Navigation Arrows -->
+    <span class="arrow left" onclick="prevSlide()">&#10094;</span>
+    <span class="arrow right" onclick="nextSlide()">&#10095;</span>
+
+    <!-- Dots -->
+    <div class="dots">
+        <span class="dot active" onclick="currentSlide(0)"></span>
+        <span class="dot" onclick="currentSlide(1)"></span>
+    </div>
+</div>
+
+<script>
+// ===== Carousel JS =====
+let currentIndex = 0;
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.dot');
+
+function showSlide(index){
+    slides.forEach((s,i)=> s.classList.remove('active'));
+    dots.forEach((d,i)=> d.classList.remove('active'));
+    slides[index].classList.add('active');
+    dots[index].classList.add('active');
+    currentIndex = index;
+}
+
+function nextSlide(){
+    let next = currentIndex + 1;
+    if(next >= slides.length) next = 0;
+    showSlide(next);
+}
+
+function prevSlide(){
+    let prev = currentIndex - 1;
+    if(prev < 0) prev = slides.length - 1;
+    showSlide(prev);
+}
+
+// Auto-slide every 5s
+setInterval(nextSlide, 5000);
+
+// Dot navigation
+function currentSlide(index){
+    showSlide(index);
+}
+</script>
+
+</body>
+</html>
