@@ -23,12 +23,19 @@ a { display:inline-block; margin-top:20px; color:#0a5c7a; text-decoration:none; 
 </div>
 
 <div class="product">
-  <h3>Tilapia</h3>
-  <p>₱160 / kilo</p>
-  <button onclick="addToCart('Tilapia',160)">Add to Cart</button>
+  <img src="images/salmon.jpg" alt="Salmon Slice">
+  <h3>Salmon Slice</h3>
+  <p>₱560 / kilo</p>
+  <button onclick="addToCart('Salmon Slice', 560)">Add to Cart</button>
 </div>
 
-<a href="cart.html">View Cart / Checkout</a>
+<div class="product">
+  <img src="images/tilapia.jpg" alt="Tilapia">
+  <h3>Tilapia</h3>
+  <p>₱160 / kilo</p>
+  <button onclick="addToCart('Tilapia', 160)">Add to Cart</button>
+</div>
+
 
 <script>
 function addToCart(name, price){
@@ -46,3 +53,4 @@ function addToCart(name, price){
 
 </body>
 </html>
+
